@@ -9,4 +9,9 @@ object FuzzingDataSerializer {
         val jsonString = Json.encodeToString(ListSerializer(ResolverCallUri.serializer()), callUris)
         File(filePath).writeText(jsonString)
     }
+
+    fun deserialize(file: File): List<ResolverCallUri> {
+        val jsonString = file.readText()
+        return Json.decodeFromString(ListSerializer(ResolverCallUri.serializer()), jsonString)
+    }
 }
