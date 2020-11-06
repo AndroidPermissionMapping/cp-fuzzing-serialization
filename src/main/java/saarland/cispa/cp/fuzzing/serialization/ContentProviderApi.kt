@@ -4,7 +4,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class FuzzingData {
+data class FuzzingData(val className: String, val data: List<ContentProviderApi>)
+
+@Serializable
+sealed class ContentProviderApi {
     abstract val uri: String
 }
 
@@ -15,7 +18,7 @@ data class ResolverCallUri(
         val method: String,
         val arg: String?,
         val extras: Map<String, String>?
-) : FuzzingData()
+) : ContentProviderApi()
 
 @Serializable
 @SerialName("query_api_1")
@@ -25,7 +28,7 @@ data class ResolverQueryApi1(
         val selection: String?,
         val selectionArgs: Array<String>?,
         val sortOrder: String?
-) : FuzzingData() {
+) : ContentProviderApi() {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
