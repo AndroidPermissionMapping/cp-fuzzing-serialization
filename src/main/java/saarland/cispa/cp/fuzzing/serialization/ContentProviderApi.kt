@@ -12,6 +12,16 @@ sealed class ContentProviderApi {
 }
 
 @Serializable
+data class ContentValue(val typeName: String, val key: String)
+
+@Serializable
+@SerialName("insert_api_1")
+data class ResolverCallInsert(
+        override val uri: String,
+        val contentValue: ContentValue
+) : ContentProviderApi()
+
+@Serializable
 @SerialName("call")
 data class ResolverCallUri(
         override val uri: String,
