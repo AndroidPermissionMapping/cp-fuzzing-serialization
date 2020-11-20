@@ -11,8 +11,31 @@ sealed class ContentProviderApi {
     abstract val uri: String
 }
 
+enum class ContentValueType(val className: String) {
+    STRING("java.lang.String"),
+    INT("java.lang.Integer"),
+    LONG("java.lang.Long"),
+    BOOL("java.lang.Boolean"),
+    OBJECT("java.lang.Object"),
+    BYTES("byte[]");
+
+    companion object {
+        fun fromJavaClassName(className: String): ContentValueType {
+            return when (className) {
+                STRING.className -> STRING
+                INT.className -> INT
+                LONG.className -> LONG
+                BOOL.className -> BOOL
+                OBJECT.className -> OBJECT
+                BYTES.className -> BYTES
+                else -> throw NotImplementedError("Unknown ContentValue type: $className")
+            }
+        }
+    }
+}
+
 @Serializable
-data class ContentValue(val typeName: String, val key: String)
+data class ContentValue(val type: ContentValueType, val key: String)
 
 @Serializable
 @SerialName("insert_api_1")
