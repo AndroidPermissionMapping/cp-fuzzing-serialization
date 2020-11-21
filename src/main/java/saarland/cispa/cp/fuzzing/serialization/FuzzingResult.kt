@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class FuzzingResult(
-    val input: ResolverCallUri,
+    val input: ContentProviderApi,
     val thrownException: String?,
 )
