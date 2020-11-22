@@ -11,7 +11,7 @@ sealed class ContentProviderApi {
     abstract val uri: String
 }
 
-enum class ContentValueType(val className: String) {
+enum class JavaType(val className: String) {
     STRING("java.lang.String"),
     INT("java.lang.Integer"),
     LONG("java.lang.Long"),
@@ -20,7 +20,7 @@ enum class ContentValueType(val className: String) {
     BYTES("byte[]");
 
     companion object {
-        fun fromJavaClassName(className: String): ContentValueType {
+        fun fromClassName(className: String): JavaType {
             return when (className) {
                 STRING.className -> STRING
                 INT.className -> INT
@@ -28,20 +28,20 @@ enum class ContentValueType(val className: String) {
                 BOOL.className -> BOOL
                 OBJECT.className -> OBJECT
                 BYTES.className -> BYTES
-                else -> throw NotImplementedError("Unknown ContentValue type: $className")
+                else -> throw NotImplementedError("Unknown java type: $className")
             }
         }
     }
 }
 
 @Serializable
-data class ContentValue(val type: ContentValueType, val key: String)
+data class BundleKey(val type: JavaType, val key: String)
 
 @Serializable
 @SerialName("insert_api_1")
 data class ResolverCallInsert(
         override val uri: String,
-        val contentValue: ContentValue
+        val contentValue: BundleKey
 ) : ContentProviderApi()
 
 @Serializable
@@ -51,6 +51,21 @@ data class ResolverCallUri(
         val method: String,
         val arg: String?,
         val extras: Map<String, String>?
+) : ContentProviderApi()
+
+@Serializable
+@SerialName("update_api_1")
+data class ResolverCallUpdate(
+        override val uri: String,
+        val contentValue: BundleKey,
+        val selection: String
+) : ContentProviderApi()
+
+@Serializable
+@SerialName("delete_api_1")
+data class ResolverCallDelete(
+        override val uri: String,
+        val selection: String,
 ) : ContentProviderApi()
 
 @Serializable
