@@ -44,13 +44,19 @@ data class ResolverCallInsert(
         val contentValue: BundleKey
 ) : ContentProviderApi()
 
+enum class CallApiLevel {
+    API_11,
+    API_29
+}
+
 @Serializable
 @SerialName("call_api_11_29")
 data class ResolverCallUri(
         override val uri: String,
+        val apiLevel: CallApiLevel,
         val method: String,
         val arg: String?,
-        val extras: BundleKey
+        val extras: BundleKey?
 ) : ContentProviderApi()
 
 @Serializable
