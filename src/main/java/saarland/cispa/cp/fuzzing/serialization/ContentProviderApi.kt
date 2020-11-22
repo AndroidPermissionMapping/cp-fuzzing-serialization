@@ -45,12 +45,12 @@ data class ResolverCallInsert(
 ) : ContentProviderApi()
 
 @Serializable
-@SerialName("call")
+@SerialName("call_api_11_29")
 data class ResolverCallUri(
         override val uri: String,
         val method: String,
         val arg: String?,
-        val extras: Map<String, String>?
+        val extras: BundleKey
 ) : ContentProviderApi()
 
 @Serializable
