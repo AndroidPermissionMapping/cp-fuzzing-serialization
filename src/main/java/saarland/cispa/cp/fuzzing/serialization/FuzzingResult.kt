@@ -7,4 +7,5 @@ import kotlinx.serialization.Serializable
 data class FuzzingResult(
     val input: ContentProviderApi,
     val thrownException: String?,
+    val stackTrace: String?
 )
