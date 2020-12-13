@@ -5,13 +5,16 @@ import kotlinx.serialization.json.Json
 import java.io.File
 
 object FuzzingDataSerializer {
+    fun serialize(fuzzingData: List<FuzzingData>): String {
+        return Json.encodeToString(ListSerializer(FuzzingData.serializer()), fuzzingData)
+    }
+
     fun serialize(filePath: String, fuzzingData: List<FuzzingData>) {
-        val jsonString = Json.encodeToString(ListSerializer(FuzzingData.serializer()), fuzzingData)
+        val jsonString = serialize(fuzzingData)
         File(filePath).writeText(jsonString)
     }
 
-    fun deserialize(file: File): List<FuzzingData> {
-        val jsonString = file.readText()
+    fun deserialize(jsonString: String): List<FuzzingData> {
         return Json.decodeFromString(ListSerializer(FuzzingData.serializer()), jsonString)
     }
 }
